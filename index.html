@@ -38,6 +38,10 @@
       margin-left: auto;
       margin-right: auto;
     }
+    a {
+      color: #00c18c;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -53,6 +57,8 @@
     <p id="subject"></p>
     <h3>📝 Nội dung ngắn:</h3>
     <p id="snippet"></p>
+    <h3>🔗 Đường dẫn liên quan:</h3>
+    <p id="link"></p>
   </div>
 
   <script>
@@ -60,6 +66,7 @@
     const resultBox = document.getElementById('result');
     const subject = document.getElementById('subject');
     const snippet = document.getElementById('snippet');
+    const link = document.getElementById('link');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -67,16 +74,23 @@
 
       try {
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ email })
-});
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email })
+        });
 
         const data = await res.json();
         subject.textContent = data.subject || '[Không có tiêu đề]';
         snippet.textContent = data.snippet || '[Không có nội dung]';
+
+        if (data.link) {
+          link.innerHTML = `<a href="${data.link}" target="_blank">${data.link}</a>`;
+        } else {
+          link.textContent = '[Không có đường dẫn]';
+        }
+
         resultBox.style.display = 'block';
       } catch (err) {
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
