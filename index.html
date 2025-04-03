@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,6 +42,7 @@
 </head>
 <body>
   <h1>📬 Xem Email Gần Nhất</h1>
+
   <form id="email-form">
     <input type="email" id="email-input" placeholder="Nhập email..." required />
     <button type="submit">Xem</button>
@@ -62,7 +63,7 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('email-input').value;
+      const email = document.getElementById('email-input').value.trim();
 
       try {
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
@@ -79,6 +80,7 @@
         resultBox.style.display = 'block';
       } catch (err) {
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
+        resultBox.style.display = 'none';
       }
     });
   </script>
