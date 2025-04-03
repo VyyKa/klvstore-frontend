@@ -67,12 +67,12 @@
 
       try {
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email })
-        });
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ email })
+});
 
         const data = await res.json();
         subject.textContent = data.subject || '[Không có tiêu đề]';
