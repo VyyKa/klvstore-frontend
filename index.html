@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KLV Email Viewer</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    input[type="email"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #00c18c;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 40px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>📬 Xem Email Gần Nhất</h1>
+  <form id="email-form">
+    <input type="email" id="email-input" placeholder="Nhập email..." required />
+    <button type="submit">Xem</button>
+  </form>
+
+  <div class="result" id="result" style="display: none;">
+    <h3>📩 Chủ đề:</h3>
+    <p id="subject"></p>
+    <h3>📝 Nội dung ngắn:</h3>
+    <p id="snippet"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('email-form');
+    const resultBox = document.getElementById('result');
+    const subject = document.getElementById('subject');
+    const snippet = document.getElementById('snippet');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value;
+
+      try {
+        const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        subject.textContent = data.subject || '[Không có tiêu đề]';
+        snippet.textContent = data.snippet || '[Không có nội dung]';
+        resultBox.style.display = 'block';
+      } catch (err) {
+        alert('Lỗi: Không thể lấy email. Hãy thử lại.');
+      }
+    });
+  </script>
+</body>
+</html>
