@@ -37,6 +37,7 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      display: none;
     }
     a {
       color: #00c18c;
@@ -52,13 +53,13 @@
     <button type="submit">Xem</button>
   </form>
 
-  <div class="result" id="result" style="display: none;">
+  <div class="result" id="result">
     <h3>📩 Chủ đề:</h3>
-    <p id="subject"></p>
+    <p id="subject">[Đang tải...]</p>
     <h3>📝 Nội dung ngắn:</h3>
-    <p id="snippet"></p>
+    <p id="snippet">[Đang tải...]</p>
     <h3>🔗 Đường dẫn liên quan:</h3>
-    <p id="link"></p>
+    <p id="link">[Đang tải...]</p>
   </div>
 
   <script>
@@ -73,6 +74,13 @@
       const email = document.getElementById('email-input').value.trim();
 
       try {
+        // Hiển thị thông báo đang tải khi gửi yêu cầu
+        resultBox.style.display = 'block';
+        subject.textContent = "[Đang tải...]";
+        snippet.textContent = "[Đang tải...]";
+        link.textContent = "[Đang tải...]";
+
+        // Gửi yêu cầu POST tới Webhook
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
           method: 'POST',
           headers: {
@@ -81,18 +89,19 @@
           body: JSON.stringify({ email })
         });
 
+        // Xử lý dữ liệu trả về
         const data = await res.json();
+
+        // Cập nhật kết quả
         subject.textContent = data.subject || '[Không có tiêu đề]';
         snippet.textContent = data.snippet || '[Không có nội dung]';
-
         if (data.link) {
           link.innerHTML = `<a href="${data.link}" target="_blank">${data.link}</a>`;
         } else {
           link.textContent = '[Không có đường dẫn]';
         }
-
-        resultBox.style.display = 'block';
       } catch (err) {
+        // Hiển thị lỗi nếu có
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
         resultBox.style.display = 'none';
       }
