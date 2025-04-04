@@ -34,14 +34,18 @@
       background: #222;
       padding: 20px;
       border-radius: 10px;
-      max-width: 600px;
+      max-width: 800px;
       margin-left: auto;
       margin-right: auto;
       display: none;
+      text-align: left;
+      overflow-x: auto;
     }
-    a {
-      color: #00c18c;
-      text-decoration: underline;
+    iframe {
+      width: 100%;
+      min-height: 400px;
+      border: none;
+      background: #fff;
     }
   </style>
 </head>
@@ -54,33 +58,23 @@
   </form>
 
   <div class="result" id="result">
-    <h3>📩 Chủ đề:</h3>
-    <p id="subject">[Đang tải...]</p>
-    <h3>📝 Nội dung ngắn:</h3>
-    <p id="snippet">[Đang tải...]</p>
-    <h3>🔗 Đường dẫn liên quan:</h3>
-    <p id="link">[Đang tải...]</p>
+    <h3>📄 Nội dung email:</h3>
+    <div id="email-content">[Đang tải...]</div>
   </div>
 
   <script>
     const form = document.getElementById('email-form');
     const resultBox = document.getElementById('result');
-    const subject = document.getElementById('subject');
-    const snippet = document.getElementById('snippet');
-    const link = document.getElementById('link');
+    const emailContent = document.getElementById('email-content');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email-input').value.trim();
 
       try {
-        // Hiển thị thông báo đang tải khi gửi yêu cầu
         resultBox.style.display = 'block';
-        subject.textContent = "[Đang tải...]";
-        snippet.textContent = "[Đang tải...]";
-        link.textContent = "[Đang tải...]";
+        emailContent.textContent = "[Đang tải...]";
 
-        // Gửi yêu cầu POST tới Webhook
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
           method: 'POST',
           headers: {
@@ -89,19 +83,17 @@
           body: JSON.stringify({ email })
         });
 
-        // Xử lý dữ liệu trả về
         const data = await res.json();
 
-        // Cập nhật kết quả
-        subject.textContent = data.subject || '[Không có tiêu đề]';
-        snippet.textContent = data.snippet || '[Không có nội dung]';
-        if (data.link) {
-          link.innerHTML = `<a href="${data.link}" target="_blank">${data.link}</a>`;
+        if (data.content) {
+          // Nếu nội dung là HTML: nhúng bằng iframe để bảo toàn style/layout
+          const blob = new Blob([data.content], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          emailContent.innerHTML = `<iframe src="${url}"></iframe>`;
         } else {
-          link.textContent = '[Không có đường dẫn]';
+          emailContent.textContent = '[Không có nội dung email]';
         }
       } catch (err) {
-        // Hiển thị lỗi nếu có
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
         resultBox.style.display = 'none';
       }
