@@ -4,18 +4,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="/" href="lg.png">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
   <title>KLVStore Email</title>
   <style>
     body {
-      background: url("https://vcdn1-sohoa.vnecdn.net/2023/03/20/313002021-691075089063852-4437-2498-2721-1679287239.jpg?w=0&h=0&q=100&dpr=2&fit=crop&s=x3fAlrj67IDySRJuNSimZw");
+      background: url("https://images8.alphacoders.com/136/1360352.png");
       background-size: cover;
       color: #fff;
       font-family: sans-serif;
-      text-align: center;
       padding: 40px;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 10px;
+      width: 1000px;
+      text-align: center;
+      position: fixed; /* Ghim container ở đầu trang */
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
     }
 
     input[type="email"] {
@@ -23,7 +42,8 @@
       font-size: 16px;
       border-radius: 5px;
       border: none;
-      width: 300px;
+      width: 100%;
+      margin-bottom: 15px;
     }
 
     button {
@@ -45,9 +65,11 @@
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
-      display: none;
+      display: none; /* Ẩn kết quả ban đầu */
       text-align: left;
       overflow-x: auto;
+      opacity: 0;
+      transition: opacity 1s ease-out;
     }
 
     iframe {
@@ -57,17 +79,37 @@
       background: #fff;
     }
 
-    /* CSS cho hiệu ứng bông tuyết */
-    .snowflake {
+    /* Vòng quay loading */
+    .loading {
+      display: none;
+      margin: 20px auto;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #00c18c;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Hiệu ứng bông mai rơi */
+    .flower {
       position: absolute;
       top: -10px;
-      color: white;
       font-size: 1em;
       z-index: 9999;
       user-select: none;
       pointer-events: none;
       opacity: 0.8;
-      animation: fall linear infinite;
+      animation: fall 6s linear infinite;
     }
 
     @keyframes fall {
@@ -75,20 +117,35 @@
         transform: translateY(100vh) rotate(360deg);
       }
     }
+
+    .contact-button {
+      margin-top: 20px;
+    }
   </style>
 </head>
 
 <body>
-  <h1>📬 Web Xem Email Gần Nhất - KLVStore</h1>
+  <div class="container">
+    <h1>📬 Web Lấy Mail Xác Minh - KLVStore</h1>
 
-  <form id="email-form">
-    <input type="email" id="email-input" placeholder="Nhập email..." required />
-    <button type="submit">Xem</button>
-  </form>
+    <form id="email-form">
+      <input type="email" id="email-input" placeholder="Nhập email..." required />
+      <button type="submit">
+        <i class="fas fa-eye"></i> Xem <i class="fas fa-eye"></i>
+      </button> <!-- Thêm icon "eye" ở đầu và cuối nút -->
+    </form>
 
-  <div class="result" id="result">
-    <h3>📄 Nội dung email:</h3>
-    <div id="email-content">[Đang tải...]</div>
+    <!-- Vòng quay loading -->
+    <div id="loading" class="loading"></div>
+
+    <div class="result" id="result">
+      <h3>📄 Nội dung email:</h3>
+      <div id="email-content">[Đang tải...]</div>
+    </div>
+
+    <div class="contact-button">
+      <button onclick="window.location.href='https://t.me/KhaLVstore'">Contact to admin</button>
+    </div>
   </div>
 
   <script>
@@ -96,13 +153,18 @@
     const form = document.getElementById('email-form');
     const resultBox = document.getElementById('result');
     const emailContent = document.getElementById('email-content');
+    const loading = document.getElementById('loading');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email-input').value.trim();
 
+      // Hiển thị vòng quay loading
+      loading.style.display = 'block';
+
       try {
         resultBox.style.display = 'block';
+        resultBox.style.opacity = 0; // Ẩn kết quả khi bắt đầu
         emailContent.textContent = "[Đang tải...]";
 
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
@@ -122,39 +184,44 @@
         } else {
           emailContent.textContent = '[Không có nội dung email]';
         }
+
+        // Ẩn vòng quay loading khi kết quả đã có
+        loading.style.display = 'none';
+
+        // Hiển thị kết quả với hiệu ứng mượt mà
+        setTimeout(() => {
+          resultBox.style.opacity = 1;
+        }, 100);
+
       } catch (err) {
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
         resultBox.style.display = 'none';
+        loading.style.display = 'none'; // Ẩn vòng quay khi có lỗi
       }
     });
 
-    // Hiệu ứng bông tuyết rơi
-    const snowflakes = ['❄', '❅', '❆']; // Các ký tự bông tuyết
+    // Hiệu ứng bông mai rơi
+    const flowers = ['🌸', '🌼', '🏵️']; // Các ký tự bông mai
 
-    function createSnowflake() {
-      const snowflake = document.createElement('div');
-      snowflake.classList.add('snowflake');
-      snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-      snowflake.style.fontSize = `${Math.random() * 15 + 10}px`; // Kích thước bông tuyết ngẫu nhiên
-      snowflake.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
-      snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thời gian rơi ngẫu nhiên
+    function createFlower() {
+      const flower = document.createElement('div');
+      flower.classList.add('flower');
+      flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+      flower.style.fontSize = `${Math.random() * 15 + 15}px`; // Kích thước bông mai ngẫu nhiên
+      flower.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
+      flower.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thời gian rơi ngẫu nhiên
 
-      document.body.appendChild(snowflake);
+      document.body.appendChild(flower);
 
-      // Xóa bông tuyết sau khi nó rơi xuống
+      // Xóa bông mai sau khi nó rơi xuống
       setTimeout(() => {
-        snowflake.remove();
+        flower.remove();
       }, 7000);
     }
 
-    // Tạo bông tuyết mỗi 100ms
-    setInterval(createSnowflake, 100);
+    // Tạo bông mai mỗi 100ms
+    setInterval(createFlower, 100);
   </script>
-  <link rel="stylesheet" href="https://t.me/KhaLVstore">
-  <h1>
-    <button onclick="window.location.href='https://t.me/KhaLVstore'">Contact to admin</button>
-  </h1>
-  
 </body>
 
 </html>
