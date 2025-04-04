@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="/" href="lg.png">
+  <link rel="icon" type="image/png" href="logo.png">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
@@ -22,19 +22,21 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      box-sizing: border-box;
     }
 
     .container {
       background: rgba(0, 0, 0, 0.7);
       padding: 30px;
       border-radius: 10px;
-      width: 1000px;
+      width: 100%;
+      max-width: 1000px; /* Giới hạn chiều rộng tối đa của container */
       text-align: center;
       position: fixed; /* Ghim container ở đầu trang */
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
+      z-index: 100;
     }
 
     input[type="email"] {
@@ -55,6 +57,9 @@
       border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
+      width: 100%; /* Làm nút có chiều rộng 100% để phù hợp với các thiết bị di động */
+      max-width: 300px; /* Giới hạn chiều rộng của nút */
+      margin-top: 15px;
     }
 
     .result {
@@ -65,7 +70,7 @@
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
-      display: none; /* Ẩn kết quả ban đầu */
+      display: none;
       text-align: left;
       overflow-x: auto;
       opacity: 0;
@@ -105,7 +110,7 @@
       position: absolute;
       top: -10px;
       font-size: 1em;
-      z-index: 9999;
+      z-index: 1;
       user-select: none;
       pointer-events: none;
       opacity: 0.8;
@@ -121,21 +126,58 @@
     .contact-button {
       margin-top: 20px;
     }
+
+    /* Media Queries cho thiết bị di động và tablet */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      button {
+        width: 100%; /* Làm nút có chiều rộng 100% trên các thiết bị di động */
+        max-width: 100%;
+        padding: 15px;
+      }
+
+      .result {
+        width: 90%;
+        max-width: none;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 18px; /* Giảm kích thước chữ cho các màn hình nhỏ */
+      }
+
+      input[type="email"] {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>📬 Web Lấy Mail Xác Minh - KLVStore</h1>
+    <h1>📬 Web Xem Email Gần Nhất - KLVStore</h1>
 
     <form id="email-form">
       <input type="email" id="email-input" placeholder="Nhập email..." required />
       <button type="submit">
         <i class="fas fa-eye"></i> Xem <i class="fas fa-eye"></i>
-      </button> <!-- Thêm icon "eye" ở đầu và cuối nút -->
+      </button>
     </form>
 
-    <!-- Vòng quay loading -->
     <div id="loading" class="loading"></div>
 
     <div class="result" id="result">
@@ -149,7 +191,6 @@
   </div>
 
   <script>
-    // JavaScript xử lý API
     const form = document.getElementById('email-form');
     const resultBox = document.getElementById('result');
     const emailContent = document.getElementById('email-content');
@@ -159,12 +200,11 @@
       e.preventDefault();
       const email = document.getElementById('email-input').value.trim();
 
-      // Hiển thị vòng quay loading
       loading.style.display = 'block';
 
       try {
         resultBox.style.display = 'block';
-        resultBox.style.opacity = 0; // Ẩn kết quả khi bắt đầu
+        resultBox.style.opacity = 0;
         emailContent.textContent = "[Đang tải...]";
 
         const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
@@ -185,41 +225,35 @@
           emailContent.textContent = '[Không có nội dung email]';
         }
 
-        // Ẩn vòng quay loading khi kết quả đã có
         loading.style.display = 'none';
 
-        // Hiển thị kết quả với hiệu ứng mượt mà
         setTimeout(() => {
           resultBox.style.opacity = 1;
         }, 100);
-
       } catch (err) {
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
         resultBox.style.display = 'none';
-        loading.style.display = 'none'; // Ẩn vòng quay khi có lỗi
+        loading.style.display = 'none';
       }
     });
 
-    // Hiệu ứng bông mai rơi
-    const flowers = ['🌸', '🌼', '🏵️']; // Các ký tự bông mai
+    const flowers = ['🌸', '🌺', '🌼'];
 
     function createFlower() {
       const flower = document.createElement('div');
       flower.classList.add('flower');
       flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-      flower.style.fontSize = `${Math.random() * 15 + 15}px`; // Kích thước bông mai ngẫu nhiên
-      flower.style.left = `${Math.random() * 100}vw`; // Vị trí ngang ngẫu nhiên
-      flower.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thời gian rơi ngẫu nhiên
+      flower.style.fontSize = `${Math.random() * 15 + 15}px`;
+      flower.style.left = `${Math.random() * 100}vw`;
+      flower.style.animationDuration = `${Math.random() * 5 + 5}s`;
 
       document.body.appendChild(flower);
 
-      // Xóa bông mai sau khi nó rơi xuống
       setTimeout(() => {
         flower.remove();
       }, 7000);
     }
 
-    // Tạo bông mai mỗi 100ms
     setInterval(createFlower, 100);
   </script>
 </body>
