@@ -4,77 +4,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tra cứu nội dung email gần nhất tại KLVStore một cách nhanh chóng và tiện lợi." />
   <link rel="icon" type="image/png" href="lg.png">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <title>Tra cứu Email | KLVStore</title>
 
-  <title>KLVStore Email</title>
   <style>
-    body {
-      background: url("https://images8.alphacoders.com/136/1360352.png");
-      background-size: cover;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 40px;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+    * {
       box-sizing: border-box;
     }
 
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url("https://images8.alphacoders.com/136/1360352.png") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .container {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       padding: 30px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 1000px; /* Giới hạn chiều rộng tối đa của container */
+      border-radius: 15px;
+      max-width: 600px;
+      width: 95%;
       text-align: center;
-      position: fixed; /* Ghim container ở đầu trang */
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
+      position: relative;
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
     }
 
     input[type="email"] {
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 5px;
+      border-radius: 8px;
       border: none;
       width: 100%;
-      margin-bottom: 15px;
     }
 
     button {
-      padding: 10px 20px;
-      margin-left: 10px;
       background: #00c18c;
-      color: #fff;
+      color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      padding: 12px 20px;
       font-size: 16px;
       cursor: pointer;
-      width: 100%; /* Làm nút có chiều rộng 100% để phù hợp với các thiết bị di động */
-      max-width: 300px; /* Giới hạn chiều rộng của nút */
-      margin-top: 15px;
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #00a67a;
     }
 
     .result {
-      margin-top: 40px;
+      margin-top: 30px;
       background: #222;
       padding: 20px;
       border-radius: 10px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
       display: none;
-      text-align: left;
-      overflow-x: auto;
       opacity: 0;
-      transition: opacity 1s ease-out;
+      transition: opacity 1s ease-in-out;
+      overflow: hidden;
+    }
+
+    .result.show {
+      display: block;
+      opacity: 1;
     }
 
     iframe {
@@ -84,7 +112,6 @@
       background: #fff;
     }
 
-    /* Vòng quay loading */
     .loading {
       display: none;
       margin: 20px auto;
@@ -100,21 +127,21 @@
       0% {
         transform: rotate(0deg);
       }
+
       100% {
         transform: rotate(360deg);
       }
     }
 
-    /* Hiệu ứng bông mai rơi */
     .flower {
       position: absolute;
       top: -10px;
       font-size: 1em;
-      z-index: 1;
       user-select: none;
       pointer-events: none;
       opacity: 0.8;
       animation: fall 6s linear infinite;
+      z-index: 1;
     }
 
     @keyframes fall {
@@ -127,41 +154,23 @@
       margin-top: 20px;
     }
 
-    /* Media Queries cho thiết bị di động và tablet */
-    @media screen and (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-
-      button {
-        width: 100%; /* Làm nút có chiều rộng 100% trên các thiết bị di động */
-        max-width: 100%;
-        padding: 15px;
-      }
-
-      .result {
-        width: 90%;
-        max-width: none;
-      }
+    .contact-button button {
+      background: #0077cc;
     }
 
     @media screen and (max-width: 480px) {
-      .container {
-        padding: 15px;
-      }
-
       h1 {
-        font-size: 18px; /* Giảm kích thước chữ cho các màn hình nhỏ */
+        font-size: 1.5rem;
       }
 
-      input[type="email"] {
-        font-size: 14px;
-        padding: 8px;
-      }
-
+      input[type="email"],
       button {
         font-size: 14px;
-        padding: 12px;
+        padding: 10px;
+      }
+
+      iframe {
+        min-height: 300px;
       }
     }
   </style>
@@ -169,12 +178,12 @@
 
 <body>
   <div class="container">
-    <h1>📬 Web Xem Email Gần Nhất - KLVStore</h1>
+    <h1>📬 Xem Email Gần Nhất – KLVStore</h1>
 
     <form id="email-form">
       <input type="email" id="email-input" placeholder="Nhập email..." required />
       <button type="submit">
-        <i class="fas fa-eye"></i> Xem <i class="fas fa-eye"></i>
+        <i class="fas fa-eye"></i> Xem nội dung
       </button>
     </form>
 
@@ -186,7 +195,7 @@
     </div>
 
     <div class="contact-button">
-      <button onclick="window.location.href='https://t.me/KhaLVstore'">Contact to admin</button>
+      <button onclick="window.location.href='https://t.me/KhaLVstore'">📩 Liên hệ Admin</button>
     </div>
   </div>
 
@@ -203,15 +212,12 @@
       loading.style.display = 'block';
 
       try {
-        resultBox.style.display = 'block';
-        resultBox.style.opacity = 0;
+        resultBox.classList.remove('show');
         emailContent.textContent = "[Đang tải...]";
 
         const res = await fetch('https://eclatduteint.vn/webhook/get-email', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         });
 
@@ -226,13 +232,10 @@
         }
 
         loading.style.display = 'none';
-
-        setTimeout(() => {
-          resultBox.style.opacity = 1;
-        }, 100);
+        resultBox.classList.add('show');
       } catch (err) {
         alert('Lỗi: Không thể lấy email. Hãy thử lại.');
-        resultBox.style.display = 'none';
+        resultBox.classList.remove('show');
         loading.style.display = 'none';
       }
     });
@@ -246,12 +249,8 @@
       flower.style.fontSize = `${Math.random() * 15 + 15}px`;
       flower.style.left = `${Math.random() * 100}vw`;
       flower.style.animationDuration = `${Math.random() * 5 + 5}s`;
-
       document.body.appendChild(flower);
-
-      setTimeout(() => {
-        flower.remove();
-      }, 7000);
+      setTimeout(() => flower.remove(), 7000);
     }
 
     setInterval(createFlower, 100);
