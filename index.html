@@ -17,17 +17,18 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      padding: 0;
+      padding: 40px 20px;
       font-family: 'Poppins', sans-serif;
       background: url("https://images8.alphacoders.com/136/1360352.png") no-repeat center center fixed;
       background-size: cover;
       color: #fff;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .container {
@@ -35,7 +36,8 @@
       padding: 30px;
       border-radius: 15px;
       max-width: 600px;
-      width: 95%;
+      width: 100%;
+      margin: 0 auto;
       text-align: center;
       position: relative;
       animation: slideIn 1s ease-out;
