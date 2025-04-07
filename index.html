@@ -256,18 +256,6 @@
       }
     });
 
-    const flowers = ['🌸', '🌺', '🌼'];
-
-    function createFlower() {
-      const flower = document.createElement('div');
-      flower.classList.add('flower');
-      flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-      flower.style.fontSize = `${Math.random() * 15 + 15}px`;
-      flower.style.left = `${Math.random() * 100}vw`;
-      flower.style.animationDuration = `${Math.random() * 5 + 5}s`;
-      document.body.appendChild(flower);
-      setTimeout(() => flower.remove(), 7000);
-    }
 
     setInterval(createFlower, 100);
   </script>
