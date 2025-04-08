@@ -231,7 +231,7 @@
         resultBox.classList.remove('show');
         emailContent.textContent = "[Đang tải...]";
 
-        const res = await fetch('https://eclatduteint.vn/webhook/get-email', {
+        const res = await fetch('https://backup.eclatduteint.vn/webhook/get-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
