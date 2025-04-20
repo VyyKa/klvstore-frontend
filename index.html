@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tra cứu Email | KLVStore</title>
 
-    <!-- Font Poppins & FontAwesome -->
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -14,7 +14,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
 
     <style>
@@ -38,7 +37,7 @@
         z-index: 0;
       }
 
-      /* Background ảnh lịch sử */
+      /* Ảnh nền phía sau */
       body::before {
         content: "";
         position: fixed;
@@ -76,16 +75,18 @@
         width: 90vw;
         max-width: 480px;
         border-radius: 12px;
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
       }
 
       .splash-text {
         margin-top: 20px;
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 2.5vw, 1.4rem);
         font-weight: 600;
         color: #ffd700;
         animation: glowText 2s ease-in-out infinite alternate;
         text-align: center;
+        padding: 0 5vw;
+        line-height: 1.4;
+        word-break: break-word;
       }
 
       @keyframes fadeInZoom {
@@ -98,7 +99,7 @@
         to { text-shadow: 0 0 18px #ff0; }
       }
 
-      /* Topbar responsive */
+      /* Topbar */
       .topbar {
         position: fixed;
         top: 0;
@@ -114,12 +115,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         flex-wrap: wrap;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
 
       .topbar span {
-        color: #ff0;
+        color: #fff;
         padding: 4px 10px;
         max-width: 100%;
         word-break: break-word;
@@ -257,14 +258,16 @@
           class="splash-poster"
           alt="Kỷ niệm 30/4"
         />
-        <div class="splash-text">Kỷ niệm 50 năm Thống Nhất Đất Nước (1975–2025)</div>
+        <div class="splash-text">
+          Kỷ niệm 50 năm Thống Nhất Đất Nước (1975–2025)
+        </div>
       </div>
     </div>
 
     <!-- Topbar -->
     <div class="topbar">
       <span>
-        Cùng KLVStore Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 – 30/04/2025
+        🇻🇳 Cùng KLVStore Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 – 30/04/2025
       </span>
     </div>
 
@@ -285,7 +288,9 @@
       </div>
 
       <div class="contact-button">
-        <button onclick="window.location.href='https://t.me/KhaLVstore'">📩 Liên hệ Admin</button>
+        <button onclick="window.location.href='https://t.me/KhaLVstore'">
+          📩 Liên hệ Admin
+        </button>
       </div>
     </div>
 
