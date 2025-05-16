@@ -59,7 +59,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: #cc0011;
+        background: #0b97f5;
         z-index: 9999;
         display: flex;
         flex-direction: column;
@@ -76,7 +76,7 @@
 
       .verification-wrapper h2 {
         font-size: clamp(1.2rem, 3vw, 1.8rem);
-        color: #ffd700;
+        color: #ffffff;
         margin-bottom: 20px;
         text-shadow: 0 0 8px #ff0;
       }
@@ -126,66 +126,13 @@
         animation: spin 1s linear infinite;
       }
 
-      /* Splash screen */
-      #splash-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: #cc0011;
-        z-index: 9998;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .splash-wrapper {
-        text-align: center;
-        animation: fadeInZoom 2s ease-out;
-      }
-
-      .splash-poster {
-        width: 90vw;
-        max-width: 480px;
-        border-radius: 12px;
-      }
-
-      .splash-text {
-        margin-top: 20px;
-        font-size: clamp(1rem, 2.5vw, 1.4rem);
-        font-weight: 600;
-        color: #ffd700;
-        animation: glowText 2s ease-in-out infinite alternate;
-        text-align: center;
-        padding: 0 5vw;
-        line-height: 1.4;
-        word-break: break-word;
-      }
-
-      @keyframes fadeInZoom {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-      }
-
-      @keyframes glowText {
-        from { text-shadow: 0 0 8px #ff0; }
-        to { text-shadow: 0 0 18px #ff0; }
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-
       /* Topbar */
       .topbar {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        background-color: #cc0011;
+        background-color: #4070f5;
         color: white;
         font-size: 16px;
         font-weight: 600;
@@ -200,7 +147,7 @@
       }
 
       .topbar span {
-        color: #ffd700;
+        color: #ffffff;
         padding: 4px 10px;
         max-width: 100%;
         word-break: break-word;
@@ -341,24 +288,10 @@
       </div>
     </div>
 
-    <!-- Splash screen -->
-    <div id="splash-screen" style="display: none;">
-      <div class="splash-wrapper">
-        <img
-          src="https://www.rophim.me/images/event_304/50y.webp"
-          class="splash-poster"
-          alt="Kỷ niệm 30/4"
-        />
-        <div class="splash-text">
-          Kỷ niệm 50 năm Thống Nhất Đất Nước (1975–2025)
-        </div>
-      </div>
-    </div>
-
     <!-- Topbar -->
     <div class="topbar">
       <span>
-        🇻🇳 Cùng KLVStore Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 – 30/04/2025
+        KLVStore - Cung cấp các phần mềm bản quyền và các app xem phim uy tín
       </span>
     </div>
 
@@ -404,14 +337,14 @@
         "Nguyen Nhi",
         "Kaiser Nat",
         "Misa",
-        "Hotkey"
+        "Khaa",
+        "Pham Vinh"
       ];
 
       function verifyName() {
         const nameInput = document.getElementById("name-input").value.trim();
         const errorMessage = document.getElementById("error-message");
         const verificationScreen = document.getElementById("verification-screen");
-        const splashScreen = document.getElementById("splash-screen");
         const loadingVerify = document.getElementById("loading-verify");
         const verificationWrapper = document.querySelector(".verification-wrapper");
 
@@ -429,12 +362,6 @@
             verificationScreen.style.opacity = 0;
             setTimeout(() => {
               verificationScreen.style.display = "none";
-              splashScreen.style.display = "flex";
-              setTimeout(() => {
-                splashScreen.style.transition = "opacity 0.8s";
-                splashScreen.style.opacity = 0;
-                setTimeout(() => splashScreen.remove(), 800);
-              }, 4000);
             }, 800);
           }, 1000); // Show loading for 1 second before transitioning
         } else {
